@@ -6,9 +6,9 @@ _domains = [
     PluginMenuItem(
         link='plugins:adestis_netbox_domain_management:domain_list',
         link_text='Domains',
-        permissions=["adestis_netbox_domain_management.domain_list"],
+        permissions=["adestis_netbox_domain_management.view_domain"],
         buttons=(
-            PluginMenuButton('plugins:adestis_netbox_domain_management:domain_add', 'Add', 'mdi mdi-plus-thick', ButtonColorChoices.GREEN, ["adestis_netbox_domain_management.domain_add"]),
+            PluginMenuButton('plugins:adestis_netbox_domain_management:domain_add', 'Add', 'mdi mdi-plus-thick', ButtonColorChoices.GREEN, ["adestis_netbox_domain_management.add_domain"]),
         )
     ),    
 ]
