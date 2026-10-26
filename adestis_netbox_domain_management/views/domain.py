@@ -3,6 +3,15 @@ from adestis_netbox_domain_management.forms import *
 from adestis_netbox_domain_management.models import *
 from adestis_netbox_domain_management.filtersets import *
 from adestis_netbox_domain_management.tables import *
+from adestis_netbox_domain_management.views.actions import (
+    AddObject,
+    BulkDelete,
+    BulkEdit,
+    BulkExport,
+    BulkImport,
+    BulkRemoveTenant,
+    actions,
+)
 from netbox.views import generic
 from django.utils.translation import gettext as _
 from tenancy.models import Tenant, TenantGroup
@@ -33,6 +42,7 @@ class DomainListView(generic.ObjectListView):
     table = DomainTable
     filterset = DomainFilterSet
     filterset_form = DomainFilterForm
+    actions = actions(AddObject, BulkExport, BulkImport, BulkEdit, BulkDelete)
 
 class DomainEditView(generic.ObjectEditView):
     queryset = Domain.objects.all()
@@ -66,13 +76,7 @@ class TenantAffectedDomainView(generic.ObjectChildrenView):
     child_model= Domain
     table = DomainTable
     template_name = "adestis_netbox_domain_management/domain_tenant.html"
-    actions = {
-        'add': {'add'},
-        'export': {'view'},
-        'bulk_import': {'add'},
-        'bulk_edit': {'change'},
-        'bulk_remove_tenant': {'change'},
-    }
+    actions = actions(AddObject, BulkExport, BulkImport, BulkEdit, BulkRemoveTenant)
 
     tab = ViewTab(
         label=_('Domains'),
@@ -82,4 +86,3 @@ class TenantAffectedDomainView(generic.ObjectChildrenView):
 
     def get_children(self, request, parent):
         return Domain.objects.restrict(request.user, 'view').filter(tenant=parent)
-    
